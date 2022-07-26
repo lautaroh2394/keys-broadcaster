@@ -33,8 +33,13 @@ io.on('connection', (socket) => {
     const index = keyPressesResQueue.length - 1
     const res = keyPressesResQueue[index]
     //keyPressesResQueue = keyPressesResQueue.slice(0)
-    res.send(args)
-    console.log('key-press-sent')
+    try{
+      res.send(args)
+      console.log('key-press-sent')
+    }
+    catch(error){
+      console.log('key-press-sent ERROR', error)
+    }
   });
 });
 

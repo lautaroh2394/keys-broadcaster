@@ -12,11 +12,16 @@
 
   const retrieveKeyPress = async ()=>{
     console.log('fetching...')
-    const res = await fetch('http://localhost:3000/queue-key-press')
-    console.log(res.clone())
-    const text = await res.text()
-    console.log(text)
-    addMessage(text)
+    try{
+      const res = await fetch('http://localhost:3000/queue-key-press')
+      console.log(res.clone())
+      const text = await res.text()
+      console.log(text)
+      addMessage(text)
+    }
+    catch(error){
+      console.log('Error when fetching', error)
+    }
     retrieveKeyPress()
   }
 
