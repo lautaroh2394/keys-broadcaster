@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Key broadcaster - Admin</title>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+  </body>
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+  const messages = document.querySelector("#messages")
+
+  const retrieveKeyPress = async ()=>{
+    console.log('fetching...')
+    const res = await fetch('http://localhost:3000/queue-key-press')
+    console.log(res.clone())
+    const text = await res.text()
+    console.log(text)
+    addMessage(text)
+    retrieveKeyPress()
+  }
+
+  const addMessage = (message)=> {
+    const template = document.createElement('template')
+    template.innerHTML = `<li>${message}</li>`
+    messages.appendChild(template.content.firstChild)
+  }
+
+  retrieveKeyPress()
+</script>
+</html>

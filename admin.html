@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Key broadcaster - Admin</title>
+  </head>
+  <body>
+    <button id="send">Enviar</button>
+  </body>
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  document.querySelector("#send").addEventListener('click', ()=>{
+    /*
+    fetch('http://localhost:3000/queue-key-press', {
+      method: 'post',
+      body: 'mensaje de prueba'
+    })
+    */
+   socket.emit('key-press-to-execute', 'mensaje de prueba')
+   console.log('enviado mensaje de prueba')
+  })
+  
+</script>
+</html>

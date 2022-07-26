@@ -1,11 +1,7 @@
 Simple socket based key presses broadcasting project
 
 TODOs
-    En flyff está enviando los eventos al server pero los clients no están recibiendo los mensajes. probar con socket.io
+    En flyff está enviando los eventos al server pero los clients no están recibiendo los mensajes. claramente es algo de flyff, en otras páginas funciona bien.
 
-    si no consigo corregir el problema de sockets:
-    armar http server para 
-        registrar clients, 
-        registrar admin,
-        recibir key presses para clients
-        fetch pending key presses for client
+    - Admin (cuenta principal) envía vía socket la key press
+    - Client (cuenta secundaria) constantemente hace long polling al server para recibir el key press a ejecutar
