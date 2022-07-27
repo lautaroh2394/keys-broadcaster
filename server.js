@@ -19,6 +19,10 @@ app.get('/next-key-press', (req, res) => {
   keyPressesResQueue.push(res)
 });
 
+app.get('/socket.io.js', (req, res) => {
+  res.sendFile(process.cwd() + '/socket.io.js')
+})
+
 app.get('/admin', (req, res) => {
   res.sendFile(process.cwd() + '/admin.html')
 })
