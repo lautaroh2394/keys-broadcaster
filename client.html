@@ -19,6 +19,7 @@
       console.log(res.clone())
       const json = await res.json()
       console.log(json)
+      document/*.querySelector("#canvas")*/.dispatchEvent(new KeyboardEvent(json))
       addMessage(JSON.stringify(json))
     }
     catch(error){
