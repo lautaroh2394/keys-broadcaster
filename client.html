@@ -4,9 +4,10 @@
     <title>Key broadcaster - Admin</title>
   </head>
   <body>
+    <input type="text">
     <ul id="messages"></ul>
   </body>
-    <script src="/socket.io.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 <script>
   const messages = document.querySelector("#messages")
   let totalErrors = 0
@@ -18,7 +19,6 @@
       console.log(res.clone())
       const json = await res.json()
       console.log(json)
-      document/*.querySelector("#canvas")*/.dispatchEvent(new KeyboardEvent('keydown', json))
       addMessage(JSON.stringify(json))
     }
     catch(error){

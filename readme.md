@@ -1,7 +1,2 @@
-Simple socket based key presses broadcasting project
-
-TODOs
-    En flyff está enviando los eventos al server pero los clients no están recibiendo los mensajes. claramente es algo de flyff, en otras páginas funciona bien.
-
-    - Admin (cuenta principal) envía vía socket la key press
-    - Client (cuenta secundaria) constantemente hace long polling al server para recibir el key press a ejecutar
+Simple socket based project to broadcast key presses from one web browser tab to another.
+I created this to easily use two accounts in a [web based mmorpg](https://universe.flyff.com/play#_=_).
