@@ -9,20 +9,24 @@
     <script src="/socket.io/socket.io.js"></script>
 <script>
   const messages = document.querySelector("#messages")
+  let totalErrors = 0
 
   const retrieveKeyPress = async ()=>{
     console.log('fetching...')
     try{
-      const res = await fetch('http://localhost:3000/queue-key-press')
+      const res = await fetch('http://localhost:3000/next-key-press')
       console.log(res.clone())
-      const text = await res.text()
-      console.log(text)
-      addMessage(text)
+      const json = await res.json()
+      console.log(json)
+      document/*.querySelector("#canvas")*/.dispatchEvent(new KeyboardEvent('keydown', json))
+      addMessage(JSON.stringify(json))
     }
     catch(error){
-      console.log('Error when fetching', error)
+      totalErrors = totalErrors + 1
+      console.log(`Error when fetching ${totalErrors}`, error)
     }
-    retrieveKeyPress()
+
+    totalErrors < 10 && retrieveKeyPress()
   }
 
   const addMessage = (message)=> {

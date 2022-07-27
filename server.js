@@ -13,8 +13,9 @@ const io = new Server(server,{cors: {
 }});
 
 let keyPressesResQueue = []
+let admin;
 
-app.get('/queue-key-press', (req, res) => {
+app.get('/next-key-press', (req, res) => {
   keyPressesResQueue.push(res)
 });
 
@@ -28,13 +29,16 @@ app.get('/client', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-  socket.on('key-press-to-execute', (...args) => {
-    console.log('key-press-received');
-    const index = keyPressesResQueue.length - 1
-    const res = keyPressesResQueue[index]
-    //keyPressesResQueue = keyPressesResQueue.slice(0)
+  socket.on('set-admin', ()=>{
+    console.log('set admin')
+    admin = socket
+  })
+
+  socket.on('key-press-to-execute', keyPressArgs => {
+    const res = keyPressesResQueue[0]
+    keyPressesResQueue = keyPressesResQueue.splice(1)
     try{
-      res.send(args)
+      res.send(keyPressArgs)
       console.log('key-press-sent')
     }
     catch(error){

@@ -4,21 +4,71 @@
     <title>Key broadcaster - Admin</title>
   </head>
   <body>
-    <button id="send">Enviar</button>
+    <button id="listen">Listen</button>
+    <table id="keyPresses">
+    </table>
   </body>
-    <script src="/socket.io/socket.io.js"></script>
-<script>
-  const socket = io();
-  document.querySelector("#send").addEventListener('click', ()=>{
-    /*
-    fetch('http://localhost:3000/queue-key-press', {
-      method: 'post',
-      body: 'mensaje de prueba'
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    socket.emit('set-admin')
+    const listenButton = document.querySelector("#listen");
+    const keyPressesTable = document.querySelector("#keyPresses")
+    const keyPressesToListenTo = {}
+
+    const setListener = (ev)=>{
+      const args = keyPressArgs(ev)
+      delete keyPressesToListenTo[ev.code]
+      keyPressesToListenTo[ev.code] = args
+      document.removeEventListener('keydown', setListener)
+      listenButton.textContent = 'Listen'
+      populateTable()
+    }
+
+    const populateTable = ()=>{
+      emptyTable()
+      Object.keys(keyPressesToListenTo).forEach(key => {
+        const args = keyPressesToListenTo[key]
+        const template = document.createElement('template')
+        template.innerHTML = `<tr><th>${args.code}</th><th><button>Remove</button></th></tr>`
+        template.content.querySelector('button').addEventListener('click', ()=>{
+          delete keyPressesToListenTo[key]
+          populateTable()
+        })
+        const keyPressElement = template.content.firstChild
+        keyPressesTable.appendChild(keyPressElement)
+      })
+    }
+
+    const emptyTable = ()=>{
+      keyPressesTable.innerHTML = ''
+    }
+
+    const keyPressArgs = (ev)=>{
+      return {
+        code: ev.code,
+        key: ev.key,
+        keyCode: ev.keyCode,
+        shiftKey: ev.shiftKey, 
+        ctrlKey: ev.ctrlKey,  
+        metaKey: ev.metaKey
+      }
+    }
+
+    const sendKeyPress = (ev)=>{
+      socket.emit('key-press-to-execute', keyPressArgs(ev))
+    }
+
+    listenButton.addEventListener('click', ()=>{
+      listenButton.textContent = 'Esperando key press...'
+      document.addEventListener('keydown', setListener)
     })
-    */
-   socket.emit('key-press-to-execute', 'mensaje de prueba')
-   console.log('enviado mensaje de prueba')
-  })
-  
-</script>
+
+    document.addEventListener('keydown', (ev)=>{
+      console.log('sending key press')
+      if (keyPressesToListenTo[ev.code]){
+        sendKeyPress(ev)
+      }
+    })
+  </script>
 </html>
